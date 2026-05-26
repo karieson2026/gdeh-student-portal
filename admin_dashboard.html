@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>GDEH ADMIN DASHBOARD</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+:root{
+    --bg:#121212;
+    --card:#1f1f1f;
+    --card2:#242424;
+    --orange:#ff8c00;
+    --white:#ffffff;
+    --border:#2d2d2d;
+}
+
+body{
+    background:var(--bg);
+    color:var(--white);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* TOP BAR */
+.topbar{
+    width:100%;
+    background:#1a1a1a;
+    border-bottom:1px solid var(--border);
+    padding:10px 15px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+/* LEFT */
+.top-left{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.logo-section{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.logo{
+    width:38px;
+    height:38px;
+    object-fit:contain;
+}
+
+.logo-title{
+    font-size:13px;
+    font-weight:700;
+    color:var(--orange);
+    letter-spacing:1px;
+}
+
+/* TOP MENU */
+.top-menu{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.top-menu a{
+    text-decoration:none;
+    color:var(--white);
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:20px;
+    padding:7px 12px;
+    font-size:11px;
+    transition:0.2s;
+}
+
+.top-menu a:hover{
+    background:var(--orange);
+    color:#000;
+}
+
+/* LOGOUT */
+.logout{
+
+    position:absolute;
+    top:14px;
+    right:18px;
+
+    color:#fff;
+
+    text-decoration:none;
+
+    font-size:24px;
+
+    transition:0.3s;
+
+}
+
+.logout:hover{
+
+    color:#ff4d4d;
+
+}
+
+/* TITLE */
+.page-title{
+    padding:15px;
+    font-size:18px;
+    font-weight:700;
+    color:var(--orange);
+}
+
+/* MAIN BODY */
+.main-body{
+    flex:1;
+    padding:15px;
+}
+
+/* UPLOAD SECTION */
+.upload-section{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.upload-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px;
+    width:180px;
+}
+
+.upload-card h4{
+    margin-bottom:10px;
+    font-size:13px;
+    color:var(--orange);
+}
+
+.upload-card input{
+    width:100%;
+    margin-bottom:10px;
+    font-size:11px;
+}
+/* UPLOAD BUTTON */
+.upload-card button{
+
+    width:75px;
+    height:28px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border:none;
+    outline:none;
+
+    border-radius:30px;
+
+    background:var(--orange);
+
+    color:#000;
+
+    font-size:10px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:all 0.3s ease;
+
+    box-shadow:
+    0 0 5px rgba(255,140,0,0.6),
+    0 0 10px rgba(255,140,0,0.4);
+
+}
+
+/* GLOW EFFECT */
+.upload-card button:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:
+    0 0 8px rgba(255,140,0,0.9),
+    0 0 15px rgba(255,140,0,0.8),
+    0 0 22px rgba(255,140,0,0.7);
+
+}
+/* ANNOUNCEMENTS */
+.announcement-box{
+    margin-top:25px;
+    background:var(--card);
+    border-radius:10px;
+    border:1px solid var(--border);
+    padding:15px;
+}
+
+.announcement-box h3{
+    color:var(--orange);
+    margin-bottom:10px;
+    font-size:14px;
+}
+
+.announcement-box textarea{
+    width:100%;
+    height:120px;
+    background:#181818;
+    border:1px solid var(--border);
+    color:var(--white);
+    padding:10px;
+    border-radius:8px;
+    resize:none;
+}
+/* ANNOUNCEMENT BUTTON */
+.announcement-box button{
+
+    width:95px;
+    height:30px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    margin-top:10px;
+
+    border:none;
+    outline:none;
+
+    border-radius:30px;
+
+    background:var(--orange);
+
+    color:#000;
+
+    font-size:10px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:all 0.3s ease;
+
+    box-shadow:
+    0 0 5px rgba(255,140,0,0.6),
+    0 0 10px rgba(255,140,0,0.4);
+
+}
+
+/* HOVER GLOW */
+.announcement-box button:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:
+    0 0 8px rgba(255,140,0,0.9),
+    0 0 15px rgba(255,140,0,0.8),
+    0 0 22px rgba(255,140,0,0.7);
+
+}
+/* FOOTER */
+.footer{
+    text-align:center;
+    padding:14px;
+    font-size:11px;
+    color:#fff;
+    border-top:1px solid var(--border);
+    margin-top:20px;
+    line-height:1.6;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+
+    .topbar{
+        flex-direction:column;
+        gap:10px;
+        align-items:flex-start;
+    }
+
+    .top-left{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .upload-card{
+        width:100%;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+
+    <div class="top-left">
+
+        <!-- LOGO -->
+        <div class="logo-section">
+
+            <img
+            src="GDEH_logo.png"
+            class="logo">
+
+            <div class="logo-title">
+                GDEH ADMIN
+            </div>
+
+        </div>
+
+        <!-- TOP ICONS -->
+        <div class="top-menu">
+
+            <a href="admin_students.html">
+                👨‍🎓 Students
+            </a>
+
+            <a href="#">
+                📄 Transcript
+            </a>
+
+            <a href="#">
+                📅 Timetable
+            </a>
+
+            <a href="#">
+                📢 Announcement
+            </a>
+
+            <a href="#">
+                💰 Fees
+            </a>
+
+        </div>
+
+    </div>
+
+    <a href="#"
+class="logout"
+onclick="logoutAdmin()">
+    ⎋
+</a>
+</div>
+
+<!-- TITLE -->
+<div class="page-title"
+style="
+text-align:center;
+font-size:20px;
+font-weight:700;
+letter-spacing:1px;
+">
+    ADMIN DASHBOARD
+</div>
+
+<!-- MAIN -->
+<div class="main-body">
+
+    <!-- UPLOADS -->
+    <div class="upload-section">
+
+        <div class="upload-card">
+
+            <h4>Upload Transcript</h4>
+
+            <input type="file">
+
+            <button>
+                Upload
+            </button>
+
+        </div>
+
+        <div class="upload-card">
+
+            <h4>Upload Timetable</h4>
+
+            <input type="file">
+
+            <button>
+                Upload
+            </button>
+
+        </div>
+
+        <div class="upload-card">
+
+            <h4>Upload Exams</h4>
+
+            <input type="file">
+
+            <button>
+                Upload
+            </button>
+
+        </div>
+
+        <div class="upload-card">
+
+            <h4>Upload Exam Card</h4>
+
+            <input type="file">
+
+            <button>
+                Upload
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ANNOUNCEMENT -->
+    <div class="announcement-box">
+
+        <h3>
+            Announcements
+        </h3>
+
+        <textarea
+        placeholder="Write announcement...">
+        </textarea>
+
+        <button>
+    Publish
+</button>
+
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+
+    © GDEH ADMIN DASHBOARD
+    All Rights Reserved
+
+    <br>
+
+    (Secure Management Systems)
+
+</div>
+<script>
+
+function logoutAdmin(){
+
+    localStorage.clear();
+
+    window.location.href =
+    "index.html";
+
+}
+
+</script>
+
+<script src="admin_dashboard.js"></script>
+
+</body>
+</html>

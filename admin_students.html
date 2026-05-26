@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>GDEH ADMIN STUDENTS</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+:root{
+    --bg:#121212;
+    --card:#1f1f1f;
+    --card2:#242424;
+    --orange:#ff8c00;
+    --white:#ffffff;
+    --border:#2d2d2d;
+}
+
+body{
+    background:var(--bg);
+    color:var(--white);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* TOPBAR */
+.topbar{
+    width:100%;
+    background:#1a1a1a;
+    border-bottom:1px solid var(--border);
+    padding:12px 15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo-section{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo{
+    width:40px;
+    height:40px;
+    object-fit:contain;
+}
+
+.logo-title{
+    color:var(--orange);
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.logout{
+    color:#fff;
+    text-decoration:none;
+    font-size:22px;
+}
+
+/* PAGE TITLE */
+.page-title{
+    padding:15px;
+    font-size:18px;
+    font-weight:700;
+    color:var(--orange);
+}
+
+/* SEARCH */
+.search-area{
+    padding:0 15px 15px;
+}
+
+.search-box{
+    width:100%;
+    padding:12px;
+    border:none;
+    outline:none;
+    border-radius:8px;
+    background:#1f1f1f;
+    color:#fff;
+    border:1px solid var(--border);
+}
+
+/* STUDENTS */
+.students-container{
+    flex:1;
+    padding:15px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:15px;
+}
+
+/* CARD */
+.student-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:15px;
+}
+
+.student-top{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:15px;
+}
+
+.student-photo{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    object-fit:cover;
+    border:2px solid var(--orange);
+}
+
+.student-name{
+    font-size:15px;
+    font-weight:700;
+}
+
+.student-course{
+    font-size:12px;
+    color:var(--orange);
+    margin-top:4px;
+}
+
+/* INFO */
+.student-info{
+    display:grid;
+    gap:8px;
+}
+
+.info-box{
+    background:#242424;
+    padding:8px;
+    border-radius:8px;
+    border:1px solid #2d2d2d;
+}
+
+.label{
+    font-size:9px;
+    color:#ccc;
+    margin-bottom:3px;
+    text-transform:uppercase;
+}
+
+.value{
+    font-size:12px;
+    color:#fff;
+    word-break:break-word;
+}
+
+/* BUTTONS */
+.actions{
+    margin-top:15px;
+    display:flex;
+    gap:8px;
+}
+
+/* SMALL GLOW BUTTONS */
+.btn{
+
+    width:75px;
+    height:28px;
+
+    border:none;
+    outline:none;
+
+    border-radius:30px;
+
+    cursor:pointer;
+
+    font-size:10px;
+    font-weight:700;
+
+    transition:0.3s ease;
+
+}
+
+/* EDIT BUTTON */
+.edit-btn{
+
+    background:var(--orange);
+
+    color:#000;
+
+    box-shadow:
+    0 0 5px rgba(255,140,0,0.6),
+    0 0 10px rgba(255,140,0,0.4);
+
+}
+
+/* DELETE BUTTON */
+.delete-btn{
+
+    background:#ff3b3b;
+
+    color:#fff;
+
+    box-shadow:
+    0 0 5px rgba(255,59,59,0.6),
+    0 0 10px rgba(255,59,59,0.4);
+
+}
+
+/* HOVER EFFECT */
+.btn:hover{
+
+    transform:scale(1.05);
+
+}
+
+/* EDIT GLOW */
+.edit-btn:hover{
+
+    box-shadow:
+    0 0 8px rgba(255,140,0,0.9),
+    0 0 15px rgba(255,140,0,0.8),
+    0 0 22px rgba(255,140,0,0.7);
+
+}
+
+/* DELETE GLOW */
+.delete-btn:hover{
+
+    box-shadow:
+    0 0 8px rgba(255,59,59,0.9),
+    0 0 15px rgba(255,59,59,0.8),
+    0 0 22px rgba(255,59,59,0.7);
+
+}
+/* FOOTER */
+.footer{
+    text-align:center;
+    padding:15px;
+    font-size:11px;
+    border-top:1px solid var(--border);
+    line-height:1.6;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .students-container{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+
+    <div class="logo-section">
+
+        <img
+        src="GDEH_logo.png"
+        class="logo">
+
+        <div class="logo-title">
+            GDEH ADMIN STUDENTS
+        </div>
+
+    </div>
+
+    <a href="#"
+    class="logout"
+    onclick="logoutAdmin()">
+        ⎋
+    </a>
+
+</div>
+
+<!-- TITLE -->
+<div class="page-title">
+    ALL REGISTERED STUDENTS
+</div>
+
+<!-- SEARCH -->
+<div class="search-area">
+
+    <input
+    type="text"
+    class="search-box"
+    id="searchBox"
+    placeholder="Search student...">
+
+</div>
+
+<!-- STUDENTS -->
+<div class="students-container"
+id="studentsContainer">
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+
+    © GDEH ADMIN DASHBOARD
+    All Rights Reserved
+
+    <br>
+
+    (Secure Management Systems)
+
+</div>
+
+<script>
+
+// =====================================
+// AUTH CHECK
+// =====================================
+const role =
+localStorage.getItem("role");
+
+if(role !== "admin"){
+
+    alert("Unauthorized");
+
+    window.location.href =
+    "index.html";
+
+}
+
+// =====================================
+// LOAD STUDENTS
+// =====================================
+async function loadStudents(){
+
+    try{
+
+        const res =
+        await fetch(
+            "/admin/students"
+        );
+
+        const data =
+        await res.json();
+
+        const container =
+        document.getElementById(
+            "studentsContainer"
+        );
+
+        container.innerHTML = "";
+
+        if(
+            data.success &&
+            data.students.length > 0
+        ){
+
+            data.students.forEach(student => {
+
+                container.innerHTML += `
+
+                <div class="student-card">
+
+                    <div class="student-top">
+
+                        <img
+                        src="${
+                            student.profile_photo ||
+                            'student.jpg'
+                        }"
+
+                        class="student-photo">
+
+                        <div>
+
+                            <div class="student-name">
+                                ${student.full_names}
+                            </div>
+
+                            <div class="student-course">
+                                ${student.course || ""}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="student-info">
+
+                        <div class="info-box">
+
+                            <div class="label">
+                                Email
+                            </div>
+
+                            <div class="value">
+                                ${student.email || ""}
+                            </div>
+
+                        </div>
+
+                        <div class="info-box">
+
+                            <div class="label">
+                                Role
+                            </div>
+
+                            <div class="value">
+                                ${student.role || ""}
+                            </div>
+
+                        </div>
+
+                        <div class="info-box">
+
+                            <div class="label">
+                                Student ID
+                            </div>
+
+                            <div class="value">
+                                ${student.id}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="actions">
+
+                        <button
+                        class="btn edit-btn">
+
+                            Edit
+
+                        </button>
+
+                        <button
+                        class="btn delete-btn">
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                `;
+
+            });
+
+        }
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+    }
+
+}
+
+// =====================================
+// SEARCH
+// =====================================
+document.getElementById(
+"searchBox"
+).addEventListener("keyup",
+
+function(){
+
+    const value =
+    this.value.toLowerCase();
+
+    const cards =
+    document.querySelectorAll(
+        ".student-card"
+    );
+
+    cards.forEach(card => {
+
+        if(
+            card.innerText
+            .toLowerCase()
+            .includes(value)
+        ){
+
+            card.style.display =
+            "block";
+
+        }else{
+
+            card.style.display =
+            "none";
+
+        }
+
+    });
+
+});
+
+// =====================================
+// LOGOUT
+// =====================================
+function logoutAdmin(){
+
+    localStorage.clear();
+
+    window.location.href =
+    "index.html";
+
+}
+
+// LOAD
+loadStudents();
+
+</script>
+
+</body>
+</html>

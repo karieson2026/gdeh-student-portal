@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>GDEH UNIT REGISTRATION</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+:root{
+    --bg:#121212;
+    --card:#1f1f1f;
+    --card2:#242424;
+    --orange:#ff8c00;
+    --white:#ffffff;
+    --border:#2d2d2d;
+}
+
+body{
+    background:var(--bg);
+    color:var(--white);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+/* TOPBAR */
+.topbar{
+    width:100%;
+    background:#1a1a1a;
+    border-bottom:1px solid var(--border);
+    padding:12px 15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.logo-section{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.logo{
+    width:42px;
+    height:42px;
+    object-fit:contain;
+}
+
+.logo-title{
+    color:var(--orange);
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:1px;
+}
+
+.logout{
+    color:#fff;
+    text-decoration:none;
+    font-size:22px;
+}
+
+/* PAGE TITLE */
+.page-title{
+    padding:15px;
+    text-align:center;
+}
+
+.page-title h2{
+    color:var(--orange);
+    font-size:18px;
+    margin-bottom:5px;
+}
+
+.page-title p{
+    font-size:12px;
+    color:#ccc;
+}
+
+/* UNITS AREA */
+.units-container{
+    flex:1;
+    padding:15px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:15px;
+}
+
+/* UNIT CARD */
+.unit-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:15px;
+}
+
+.unit-code{
+    color:var(--orange);
+    font-size:14px;
+    font-weight:700;
+    margin-bottom:8px;
+}
+
+.unit-name{
+    font-size:13px;
+    margin-bottom:15px;
+    line-height:1.5;
+}
+
+/* BUTTON */
+.register-btn{
+    width:110px;
+    height:32px;
+
+    border:none;
+    outline:none;
+
+    border-radius:30px;
+
+    background:var(--orange);
+
+    color:#000;
+
+    font-size:11px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.3s ease;
+
+    box-shadow:
+    0 0 5px rgba(255,140,0,0.6),
+    0 0 10px rgba(255,140,0,0.4);
+}
+
+.register-btn:hover{
+
+    transform:scale(1.05);
+
+    box-shadow:
+    0 0 8px rgba(255,140,0,0.9),
+    0 0 15px rgba(255,140,0,0.8),
+    0 0 22px rgba(255,140,0,0.7);
+}
+
+/* FOOTER */
+.footer{
+    text-align:center;
+    padding:15px;
+    font-size:11px;
+    border-top:1px solid var(--border);
+    line-height:1.6;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+    .units-container{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar">
+
+    <div class="logo-section">
+
+        <img
+        src="GDEH_logo.png"
+        class="logo">
+
+        <div class="logo-title">
+            GDEH UNIT REGISTRATION
+        </div>
+
+    </div>
+
+    <a href="#"
+    class="logout"
+    onclick="logoutStudent()">
+        ⎋
+    </a>
+
+</div>
+
+<!-- PAGE TITLE -->
+<div class="page-title">
+
+    <h2>
+        Student Unit Registration
+    </h2>
+
+    <p id="courseName">
+        Loading course...
+    </p>
+
+</div>
+
+<!-- UNITS -->
+<div class="units-container"
+id="unitsContainer">
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+
+    © GDEH STUDENT PORTAL
+    All Rights Reserved
+
+    <br>
+
+    (Secure Management Systems)
+
+</div>
+
+<script src="student_units.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8" />
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0"/>
+
+<title>
+GDEH Student Signup Portal
+</title>
+
+<link rel="stylesheet" href="student_signup.css">
+
+</head>
+<style>
+/* =========================
+   GLOBAL RESET
+========================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+body{
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    background:#0b0b0b;
+}
+
+/* =========================
+   PAGE WRAPPER
+========================= */
+.page-content-wrapper{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:24px;
+}
+
+/* =========================
+   CARD
+========================= */
+.signup-card{
+    background:#ffffff;
+    padding:24px 28px;
+    border-radius:8px;
+    width:100%;
+    max-width:440px;
+    box-shadow:0 12px 32px rgba(0,0,0,0.5);
+    border:1px solid #222222;
+}
+
+/* =========================
+   BRANDING
+========================= */
+.branding-header{
+    text-align:center;
+    margin-bottom:18px;
+    border-bottom:2px solid #ff6600;
+    padding-bottom:12px;
+}
+
+.gdeh-logo-box{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:54px;
+    height:54px;
+    background:#000;
+    color:#fff;
+    font-size:14px;
+    font-weight:900;
+    letter-spacing:1px;
+    border-radius:4px;
+    border:2px solid #ff6600;
+    margin-bottom:8px;
+}
+
+.branding-header h1{
+    color:#000;
+    font-size:15px;
+    font-weight:800;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+}
+
+.branding-header p{
+    color:#666;
+    font-size:10px;
+    margin-top:2px;
+}
+
+/* =========================
+   ALERT BOX
+========================= */
+.portal-message{
+    display:none;
+    padding:8px 10px;
+    font-size:11px;
+    font-weight:600;
+    border-radius:4px;
+    margin-bottom:14px;
+}
+
+.portal-message.error{
+    display:block;
+    background:#fce8e6;
+    color:#cc0000;
+    border:1px solid #f3c2bc;
+}
+
+.portal-message.success{
+    display:block;
+    background:#e6f4ea;
+    color:#137333;
+    border:1px solid #c2e7cc;
+}
+
+/* =========================
+   FORM LAYOUT
+========================= */
+.row{
+    display:flex;
+    gap:12px;
+}
+
+.row .input-group{
+    flex:1;
+}
+
+.row .input-group.shrink{
+    flex:0 0 110px;
+}
+
+.input-group,
+.otp-container{
+    margin-bottom:10px;
+    position:relative;
+}
+
+label{
+    display:block;
+    font-size:10px;
+    font-weight:700;
+    color:#111;
+    margin-bottom:4px;
+    text-transform:uppercase;
+    letter-spacing:.3px;
+}
+
+.required{
+    color:#ff6600;
+    margin-left:2px;
+}
+
+.field-error{
+    font-size:9px;
+    color:#cc0000;
+    margin-top:2px;
+    display:none;
+}
+
+/* =========================
+   INPUTS
+========================= */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+input[type="file"],
+select{
+    width:100%;
+    padding:7px 9px;
+    font-size:11px;
+    color:#000;
+    background:#fff;
+    border:1px solid #ccc;
+    border-radius:4px;
+    outline:none;
+    transition:all .2s ease;
+}
+
+input[type="file"]{
+    padding:5px 6px;
+    font-size:10px;
+    background:#fafafa;
+    cursor:pointer;
+}
+
+input:focus,
+select:focus{
+    border-color:#ff6600;
+    box-shadow:0 0 0 2px rgba(255,102,0,.12);
+}
+
+input.invalid-field{
+    border-color:#cc0000 !important;
+}
+
+select{
+    cursor:pointer;
+    appearance:none;
+    background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat:no-repeat;
+    background-position:right 10px center;
+    background-size:10px;
+}
+
+/* =========================
+   OTP AREA
+========================= */
+.otp-send-row{
+    display:flex;
+    gap:8px;
+}
+
+.otp-send-row input{
+    flex:1;
+}
+
+.otp-send-btn{
+    padding:0 12px;
+    background:#000;
+    color:#fff;
+    border:1px solid #000;
+    border-radius:4px;
+    font-size:10px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+    text-transform:uppercase;
+    transition:.2s ease;
+}
+
+.otp-send-btn:hover{
+    background:#ff6600;
+    border-color:#ff6600;
+}
+
+.otp-code-box{
+    max-width:115px;
+}
+
+.otp-code-box input{
+    text-align:center;
+    letter-spacing:2px;
+    font-weight:700;
+}
+
+.otp-timer-area{
+    margin-top:6px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.otp-label{
+    font-size:10px;
+    color:#666;
+}
+
+.otp-timer{
+    font-size:11px;
+    font-weight:700;
+    color:#ff6600;
+}
+
+.otp-small-text{
+    font-size:9px;
+    color:#666;
+    margin-top:3px;
+    display:block;
+}
+
+/* =========================
+   BUTTON
+========================= */
+.btn-container{
+    display:flex;
+    justify-content:center;
+    margin-top:18px;
+}
+
+.signup-btn{
+    padding:8px 24px;
+    font-size:11px;
+    font-weight:700;
+    border-radius:20px;
+    border:none;
+    min-width:150px;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+    background:#e5e5e5;
+    color:#999;
+    cursor:not-allowed;
+    transition:.2s ease;
+}
+
+.signup-btn.active{
+    background:#ff6600;
+    color:#fff;
+    cursor:pointer;
+}
+
+.signup-btn.active:hover{
+    background:#e05500;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.portal-footer{
+    width:100%;
+    background:#111;
+    border-top:1px solid #222;
+    padding:16px 20px;
+    text-align:center;
+}
+
+.portal-footer p{
+    font-size:10px;
+    color:#888;
+    font-weight:500;
+    letter-spacing:.3px;
+    line-height:1.6;
+}
+
+.portal-footer .secure-tag{
+    font-size:9px;
+    color:#ff6600;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.6px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media(max-width:520px){
+
+    .row{
+        flex-direction:column;
+    }
+
+    .row .input-group.shrink{
+        flex:1;
+    }
+
+    .signup-card{
+        padding:20px;
+    }
+
+}
+</style>
+
+<body>
+
+<div class="page-content-wrapper">
+
+<div class="signup-card">
+
+<!-- BRANDING -->
+<div class="branding-header">
+
+<div class="gdeh-logo-box">
+GDEH
+</div>
+
+<h1>
+GDEH Student Sign-Up Portal
+</h1>
+
+<p>
+Registration requires instant email identity confirmation
+</p>
+
+</div>
+
+<!-- ALERT BOX -->
+<div id="portalMessageBox"
+class="portal-message">
+</div>
+
+<!-- FORM START -->
+<form
+id="signupForm"
+method="POST"
+enctype="multipart/form-data"
+novalidate
+>
+
+<!-- PASTE FORM HERE -->
+<form id="signupForm" method="POST" enctype="multipart/form-data" novalidate>
+
+<!-- FULL NAME -->
+<div class="input-group">
+
+<label for="fullname">
+Full Name <span class="required">*</span>
+</label>
+
+<input
+type="text"
+id="fullname"
+name="full_name"
+placeholder="John Doe"
+required
+>
+
+<div class="field-error" id="error-fullname">
+Please enter your full name.
+</div>
+
+</div>
+
+<!-- PHONE -->
+<div class="input-group">
+
+<label for="phone">
+Phone Number <span class="required">*</span>
+</label>
+
+<input
+type="tel"
+id="phone"
+name="phone"
+placeholder="+254700000000"
+required
+>
+
+<div class="field-error" id="error-phone">
+Enter valid phone number.
+</div>
+
+</div>
+
+<!-- COUNTY + ZIP -->
+<div class="row">
+
+<div class="input-group">
+
+<label for="county">
+County <span class="required">*</span>
+</label>
+
+<input
+type="text"
+id="county"
+name="county"
+placeholder="Nairobi"
+required
+>
+
+</div>
+
+<div class="input-group shrink">
+
+<label for="zip">
+Zip Code <span class="required">*</span>
+</label>
+
+<input
+type="text"
+id="zip"
+name="zip_code"
+placeholder="00100"
+required
+>
+
+</div>
+
+</div>
+
+<!-- ADDRESS -->
+<div class="input-group">
+
+<label for="address">
+Address <span class="required">*</span>
+</label>
+
+<input
+type="text"
+id="address"
+name="address"
+placeholder="123 Main Street"
+required
+>
+
+</div>
+
+<!-- COURSE -->
+<div class="input-group">
+
+<label for="course-selection">
+Select Course <span class="required">*</span>
+</label>
+
+<select
+id="course-selection"
+name="course"
+required
+>
+
+<option value="">
+Choose your course...
+</option>
+
+<option value="Computer Packages">
+Computer Packages
+</option>
+
+<option value="Smartphone Literacy">
+Smartphone Literacy
+</option>
+
+<option value="Agro Entrepreneurship">
+Agro Entrepreneurship
+</option>
+
+<option value="ICT Short Courses">
+ICT Short Courses
+</option>
+
+</select>
+
+</div>
+
+<!-- PHOTO -->
+<div class="input-group">
+
+<label for="profile-photo">
+Upload Profile Photo
+<span class="required">*</span>
+</label>
+
+<input
+type="file"
+id="profile-photo"
+name="profile_photo"
+accept="image/*"
+required
+>
+
+</div>
+
+<!-- USERNAME -->
+<div class="input-group">
+
+<label for="username">
+Create Username
+<span class="required">*</span>
+</label>
+
+<input
+type="text"
+id="username"
+name="username"
+placeholder="johndoe99"
+required
+>
+
+</div>
+
+<!-- PASSWORDS -->
+<div class="row">
+
+<div class="input-group">
+
+<label for="password">
+Create Password
+<span class="required">*</span>
+</label>
+
+<input
+type="password"
+id="password"
+name="password"
+placeholder="••••••••"
+required
+>
+
+</div>
+
+<div class="input-group">
+
+<label for="confirm-password">
+Confirm Password
+<span class="required">*</span>
+</label>
+
+<input
+type="password"
+id="confirm-password"
+placeholder="••••••••"
+required
+>
+
+</div>
+
+</div>
+
+<!-- EMAIL OTP -->
+<div class="otp-container">
+
+<label for="email">
+Gmail Address For OTP
+<span class="required">*</span>
+</label>
+
+<div class="otp-send-row">
+
+<input
+type="email"
+id="email"
+name="email"
+placeholder="example@gmail.com"
+required
+>
+
+<button
+type="button"
+id="sendOtpBtn"
+class="otp-send-btn"
+>
+Send OTP
+</button>
+
+</div>
+
+<!-- OTP TIMER -->
+<div class="otp-timer-area">
+
+<small class="otp-label">
+OTP expires in:
+</small>
+
+<span id="otp-timer" class="otp-timer">
+05:00
+</span>
+
+</div>
+
+</div>
+
+<!-- OTP -->
+<div class="input-group otp-code-box">
+
+<label for="otp-code">
+Enter 6-Digit OTP
+<span class="required">*</span>
+</label>
+
+<input
+type="text"
+id="otp-code"
+name="otp"
+maxlength="6"
+placeholder="000000"
+required
+>
+
+<small class="otp-small-text">
+Enter OTP sent to your Gmail.
+</small>
+
+</div>
+
+<!-- BUTTON -->
+<div class="btn-container">
+
+<button
+type="submit"
+id="submitBtn"
+class="signup-btn"
+disabled
+>
+Create Account
+</button>
+
+</div>
+
+</form>
+</form>
+<!-- FORM END -->
+
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer class="portal-footer">
+
+<p>
+&copy; GDEH STUDENT PORTAL |
+All rights reserved
+</p>
+
+<p class="secure-tag">
+Secure Management Systems
+</p>
+
+</footer>
+
+<!-- JS -->
+<script src="student_signup.js"></script>
+
+</body>
+</html>

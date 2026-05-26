@@ -1,0 +1,232 @@
+/* =========================
+   GLOBAL
+========================= */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system,BlinkMacSystemFont,
+    "Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+
+body{
+    display:flex;
+    flex-direction:column;
+    min-height:100vh;
+    background:#ffffff;
+}
+
+/* =========================
+   PAGE WRAPPER
+========================= */
+.page-content-wrapper{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+/* =========================
+   LOGIN WRAPPER
+========================= */
+.login-wrapper{
+    width:100%;
+    max-width:320px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+/* =========================
+   NOTICE
+========================= */
+.notice-container{
+    width:100%;
+    overflow:hidden;
+    white-space:nowrap;
+    padding:2px 0;
+}
+
+.notice-text{
+    display:inline-block;
+    font-size:9px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.6px;
+    color:#d34e00;
+    padding-left:100%;
+    animation:marqueeSlide 14s linear infinite;
+}
+
+@keyframes marqueeSlide{
+    0%{
+        transform:translate3d(0,0,0);
+    }
+
+    100%{
+        transform:translate3d(-100%,0,0);
+    }
+}
+
+/* =========================
+   BRANDING
+========================= */
+.branding-header{
+    text-align:center;
+}
+
+.gdeh-logo{
+    width:70px;
+    height:70px;
+    object-fit:contain;
+    margin-bottom:8px;
+}
+
+.gdeh-title{
+    color:#000;
+    font-size:14px;
+    font-weight:800;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+}
+
+/* =========================
+   LOGIN BOX
+========================= */
+.login-box{
+    background:#ffffff;
+    padding:22px 24px;
+    border-radius:8px;
+    border:2px solid #d34e00;
+    box-shadow:
+    0 10px 25px rgba(211,78,0,0.1),
+    0 4px 12px rgba(0,0,0,0.05);
+
+    transition:0.3s ease;
+}
+
+.login-box:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+    0 14px 30px rgba(211,78,0,0.15),
+    0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   FORM TITLE
+========================= */
+.form-title{
+    text-align:center;
+    font-size:16px;
+    color:#d34e00;
+    margin-bottom:18px;
+    font-weight:800;
+    letter-spacing:1px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+.input-group{
+    margin-bottom:12px;
+    text-align:left;
+}
+
+label{
+    display:block;
+    font-size:9px;
+    font-weight:700;
+    color:#222;
+    margin-bottom:4px;
+    text-transform:uppercase;
+    letter-spacing:0.3px;
+}
+
+.input-group input{
+    width:100%;
+    padding:7px 9px;
+    font-size:11px;
+    color:#000;
+    background:#fff;
+    border:1px solid #ccc;
+    border-radius:4px;
+    outline:none;
+    transition:0.2s ease;
+}
+
+.input-group input:focus{
+    border-color:#d34e00;
+
+    box-shadow:
+    0 0 0 2px rgba(211,78,0,0.12);
+}
+
+/* =========================
+   BUTTON
+========================= */
+.btn-container{
+    display:flex;
+    justify-content:center;
+    margin-top:4px;
+    margin-bottom:10px;
+}
+
+.btn{
+    min-width:110px;
+    padding:6px 18px;
+    background:#d34e00;
+    color:#fff;
+    border:none;
+    border-radius:20px;
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    cursor:pointer;
+    transition:0.2s ease;
+}
+
+.btn:hover{
+    background:#b84300;
+
+    box-shadow:
+    0 4px 10px rgba(211,78,0,0.2);
+}
+
+/* =========================
+   LINKS
+========================= */
+.link-btn{
+    display:block;
+    text-align:center;
+    font-size:9px;
+    color:#666;
+    text-decoration:none;
+    margin-top:8px;
+    font-weight:600;
+    transition:0.15s ease;
+}
+
+.link-btn:hover{
+    color:#d34e00;
+    text-decoration:underline;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer{
+    width:100%;
+    background:#fff;
+    border-top:1px solid #eaeaea;
+    padding:14px 20px;
+    text-align:center;
+    font-size:9px;
+    color:#777;
+    font-weight:500;
+    letter-spacing:0.3px;
+    line-height:1.5;
+    margin-top:auto;
+}
