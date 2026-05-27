@@ -763,3 +763,50 @@ app.post("/register-unit", async (req, res) => {
     }
 
 });
+
+app.post("/reset-password", async (req,res)=>{
+
+  const { token, newPassword } = req.body;
+
+  try{
+
+    const user = await pool.query(
+      `SELECT * FROM signup_table
+       WHERE reset_token=$1
+       AND reset_token_expiry > NOW()`,
+      [token]
+    );
+
+    if(user.rows.length === 0){
+      return res.json({
+        success:false,
+        message:"Invalid or expired token"
+      });
+    }
+
+    await pool.query(
+      `UPDATE signup_table
+       SET create_password=$1,
+           reset_token=NULL,
+           reset_token_expiry=NULL
+       WHERE reset_token=$2`,
+      [newPassword, token]
+    );
+
+    res.json({
+      success:true,
+      message:"Password reset successful"
+    });
+
+  }catch(err){
+
+    console.log(err);
+
+    res.json({
+      success:false,
+      message:"Server error"
+    });
+
+  }
+
+});
