@@ -1,222 +1,288 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GDEH Student Portal</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GDEH Student Portal - Login</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
+    <style>
+        /* RESET */
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+        }
 
-    body {
-      background: white;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+        :root{
+            --white:#ffffff;
+            --navy:#0b1f3a;
+            --light-border:#d9dfe7;
+            --soft-bg:#f7f9fc;
+        }
 
-    /* Header */
-    .header {
-      padding: 12px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-bottom: 1px solid #ddd;
-    }
+        html,
+        body{
+            height:100%;
+        }
 
-    .logo {
-      width: 60px;
-      height: auto;
-    }
+        body{
+            background:var(--white);
+            display:flex;
+            flex-direction:column;
+            color:var(--navy);
+        }
 
-    /* Main Content */
-    .container {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 15px;
-    }
+        /* PAGE WRAPPER */
+        .page-content-wrapper{
+            flex:1;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            padding:40px 20px;
+        }
 
-    .login-box {
-      width: 100%;
-      max-width: 360px;
-      background: #f9f9f9;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
-    }
+        /* TITLE OUTSIDE CONTAINER */
+        .page-title{
+            color:var(--navy);
+            font-size:24px;
+            font-weight:600;
+            letter-spacing:0.8px;
+            margin-bottom:22px;
+            text-align:center;
+        }
 
-    .title {
-      text-align: center;
-      color: #0b1f4d;
-      margin-bottom: 20px;
-      font-size: 22px;
-      font-weight: bold;
-    }
+        .login-wrapper{
+            width:100%;
+            display:flex;
+            justify-content:center;
+        }
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      color: #4d648d;
-      font-size: 14px;
-      font-weight: bold;
-    }
+        /* LOGIN BOX */
+        .login-box{
+            width:100%;
+            max-width:460px;
+            background:var(--white);
+            border:1px solid var(--light-border);
+            border-radius:12px;
+            padding:35px;
+            box-shadow:0 4px 18px rgba(0,0,0,0.08);
+        }
 
-    input {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      color: black;
-      outline: none;
-      font-size: 14px;
-      transition: border 0.3s ease;
-    }
+        /* LOGO */
+        .form-branding{
+            display:flex;
+            justify-content:center;
+            margin-bottom:18px;
+        }
 
-    input:focus {
-      border-color: #001a4d;
-    }
+        .gdeh-logo{
+            width:80px;
+            height:80px;
+            object-fit:contain;
+        }
 
-    .login-btn {
-      width: 100%;
-      background: #001a4d;
-      color: white;
-      border: none;
-      padding: 12px;
-      font-size: 14px;
-      cursor: pointer;
-      border-radius: 6px;
-      transition: background 0.3s ease;
-    }
+        /* NOTICE BOX */
+        .form-notice-box{
+            background:var(--soft-bg);
+            border:1px solid var(--light-border);
+            border-radius:8px;
+            padding:14px;
+            margin-bottom:24px;
+            text-align:center;
+        }
 
-    .login-btn:hover {
-      background: #0b1f4d;
-    }
+        .notice-text{
+            color:var(--navy);
+            font-size:13px;
+            line-height:1.5;
+        }
 
-    .links {
-      margin-top: 15px;
-      text-align: center;
-    }
+        /* INPUT GROUPS */
+        .input-group{
+            margin-bottom:20px;
+        }
 
-    .links a {
-      display: inline-block;
-      margin: 8px 10px 0;
-      text-decoration: none;
-      color: #001a4d;
-      font-size: 13px;
-      transition: color 0.3s ease;
-    }
+        .input-group label{
+            display:block;
+            margin-bottom:7px;
+            font-size:13px;
+            font-weight:600;
+            color:var(--navy);
+        }
 
-    .links a:hover {
-      color: #0b1f4d;
-      text-decoration: underline;
-    }
+        .input-group input{
+            width:100%;
+            padding:13px 14px;
+            border:1px solid #cfd6df;
+            border-radius:6px;
+            background:#ffffff;
+            color:var(--navy);
+            font-size:14px;
+            outline:none;
+            transition:0.2s ease;
+        }
 
-    /* Footer */
-    footer {
-      background: #001a4d;
-      color: white;
-      text-align: center;
-      padding: 12px 8px;
-      margin-top: auto;
-    }
+        .input-group input:focus{
+            border-color:var(--navy);
+        }
 
-    footer .footer-title {
-      font-weight: bold;
-      font-size: 14px;
-      margin-bottom: 4px;
-    }
+        .input-group input::placeholder{
+            color:#8a94a6;
+        }
 
-    footer .footer-links {
-      color: rgba(255,255,255,0.75);
-      font-size: 12px;
-    }
+        /* BUTTON */
+        .btn-container{
+            margin-top:10px;
+            margin-bottom:20px;
+        }
 
-    /* Responsive tweaks */
-    @media (max-width: 480px) {
-      .login-box {
-        padding: 16px;
-      }
-      .title {
-        font-size: 20px;
-      }
-      input, .login-btn {
-        font-size: 13px;
-      }
-    }
-  </style>
+        .btn{
+            width:100%;
+            background:var(--navy);
+            color:#ffffff;
+            border:none;
+            border-radius:6px;
+            padding:14px;
+            font-size:14px;
+            font-weight:600;
+            cursor:pointer;
+            transition:0.2s ease;
+        }
+
+        .btn:hover{
+            opacity:0.92;
+        }
+
+        /* LINKS */
+        .link-btn{
+            display:block;
+            text-align:center;
+            margin-bottom:12px;
+            text-decoration:none;
+            color:var(--navy);
+            font-size:13px;
+            font-weight:500;
+            transition:0.2s ease;
+        }
+
+        .link-btn:hover{
+            text-decoration:underline;
+        }
+
+        /* FOOTER */
+        .footer{
+            background:var(--navy);
+            color:#ffffff;
+            text-align:center;
+            padding:18px;
+            font-size:12px;
+            letter-spacing:0.3px;
+        }
+
+        /* MOBILE */
+        @media(max-width:500px){
+
+            .page-title{
+                font-size:20px;
+            }
+
+            .login-box{
+                padding:25px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-  <!-- Header -->
-  <header class="header">
-    <img src="gdeh_logo.png" alt="GDEH Logo" class="logo">
-  </header>
+    <!-- PAGE CONTENT -->
+    <div class="page-content-wrapper">
 
-  <!-- Title Outside Container -->
-<h1 class="title">GDEH STUDENT PORTAL</h1>
+        <!-- TITLE OUTSIDE CONTAINER -->
+        <h1 class="page-title">
+            GDEH STUDENT PORTAL
+        </h1>
 
-<!-- Main -->
-<main class="container">
-    <form id="loginForm">
+        <div class="login-wrapper">
 
-        <!-- USERNAME INPUT BOX -->
-        <div class="input-group">
-            <label for="username">Username</label>
-            <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="Enter your student username"
-                autocomplete="username"
-                required
-            />
+            <!-- LOGIN BOX -->
+            <div class="login-box">
+
+                <!-- LOGO -->
+                <div class="form-branding">
+                    <img src="GDEH_logo.png" alt="GDEH Logo" class="gdeh-logo">
+                </div>
+
+                <!-- NOTICE -->
+                <div class="form-notice-box">
+                    <div class="notice-text">
+                        Welcome to GDEH Student Portal • Admissions Open • Secure Student Management System
+                    </div>
+                </div>
+
+                <!-- FORM -->
+                <form id="loginForm">
+
+                    <!-- USERNAME -->
+                    <div class="input-group">
+                        <label for="username">Username</label>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Enter your student username"
+                            required
+                        >
+                    </div>
+
+                    <!-- PASSWORD -->
+                    <div class="input-group">
+                        <label for="password">Password</label>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="••••••••"
+                            required
+                        >
+                    </div>
+
+                    <!-- BUTTON -->
+                    <div class="btn-container">
+                        <button
+                            type="button"
+                            class="btn"
+                            id="loginBtn">
+                            Login
+                        </button>
+                    </div>
+
+                    <!-- LINKS -->
+                    <a href="student_signup.html" class="link-btn">
+                        New Student? Create Account
+                    </a>
+
+                    <a href="forgot_password.html" class="link-btn">
+                        Forgot Password?
+                    </a>
+
+                </form>
+
+            </div>
+
         </div>
 
-        <!-- PASSWORD INPUT BOX -->
-        <div class="input-group">
-            <label for="password">Password</label>
-            <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="••••••••"
-                autocomplete="current-password"
-                required
-            />
-        </div>
-
-        <button type="submit" class="login-btn">LOGIN</button>
-
-        <div class="links">
-            <a href="student_signup.html">New Student Signup</a>
-            <a href="forgot_password.html">Forgot Password</a>
-        </div>
-
-    </form>
-</main>
-
-  <!-- Footer -->
-  <footer>
-    <div class="footer-title">
-      GDEH STUDENT PORTAL
     </div>
 
-    <div class="footer-links">
-      All rights reserved Secure Management Systems
-    </div>
-  </footer>
-    <!-- EXTERNAL APPLICATION JAVASCRIPT -->
+    <!-- FOOTER -->
+    <footer class="footer">
+        © GDEH STUDENT PORTAL | Secure Student Management System
+    </footer>
+
     <script src="index.js"></script>
 
 </body>
