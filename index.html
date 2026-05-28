@@ -1,4 +1,4 @@
-        
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,13 +23,15 @@
 
     /* Header */
     .header {
-      padding: 15px 25px;
+      padding: 12px 20px;
       display: flex;
       align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid #ddd;
     }
 
     .logo {
-      width: 70px;
+      width: 60px;
       height: auto;
     }
 
@@ -39,25 +41,25 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 15px;
     }
 
     .login-box {
-      width: 340px;
+      width: 100%;
+      max-width: 360px;
       background: #f9f9f9;
       border: 1px solid #ddd;
       border-radius: 8px;
-      padding: 25px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
     }
 
     .title {
       text-align: center;
       color: #0b1f4d;
-      margin-bottom: 25px;
-      font-size: 24px;
+      margin-bottom: 20px;
+      font-size: 22px;
       font-weight: bold;
-      letter-spacing: 1px;
     }
 
     label {
@@ -70,12 +72,13 @@
 
     input {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 18px;
+      padding: 12px;
+      margin-bottom: 16px;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 6px;
       color: black;
       outline: none;
+      font-size: 14px;
       transition: border 0.3s ease;
     }
 
@@ -88,10 +91,10 @@
       background: #001a4d;
       color: white;
       border: none;
-      padding: 10px;
-      font-size: 13px;
+      padding: 12px;
+      font-size: 14px;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 6px;
       transition: background 0.3s ease;
     }
 
@@ -123,19 +126,32 @@
       background: #001a4d;
       color: white;
       text-align: center;
-      padding: 14px 10px;
+      padding: 12px 8px;
       margin-top: auto;
     }
 
     footer .footer-title {
       font-weight: bold;
       font-size: 14px;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
     footer .footer-links {
       color: rgba(255,255,255,0.75);
       font-size: 12px;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 480px) {
+      .login-box {
+        padding: 16px;
+      }
+      .title {
+        font-size: 20px;
+      }
+      input, .login-btn {
+        font-size: 13px;
+      }
     }
   </style>
 </head>
@@ -146,41 +162,22 @@
   <header class="header">
     <img src="gdeh_logo.png" alt="GDEH Logo" class="logo">
   </header>
-  <form id="loginForm">
 
-                    <!-- USERNAME INPUT BOX -->
-                    <div class="input-group">
-                        <label for="username">Username</label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            placeholder="Enter your student username"
-                            required
-                        >
-                    </div>
+  <!-- Main -->
+  <main class="container">
+    <div class="loginForm">
 
-                    <!-- PASSWORD INPUT BOX -->
-                    <div class="input-group">
-                        <label for="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="••••••••"
-                            required
-                        >
-                    </div>
+      <h1 class="title">GDEH STUDENT PORTAL</h1>
 
-                    <!-- HIGH CONTRAST SUBMIT INTERFACE -->
-                    <div class="btn-container">
-                    <button
-type="button"
-class="btn"
-id="loginBtn">
-Login
-</button>
-                    </div>
+      <form>
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" required>
+
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" required>
+
+        <button type="submit" class="login-btn">LOGIN</button>
+      </form>
 
       <div class="links">
         <a href="student_signup.html">New Student Signup</a>
@@ -200,8 +197,6 @@ Login
       All rights reserved Secure Management Systems
     </div>
   </footer>
-
-
     <!-- EXTERNAL APPLICATION JAVASCRIPT -->
     <script src="index.js"></script>
 
