@@ -146,22 +146,41 @@
   <header class="header">
     <img src="gdeh_logo.png" alt="GDEH Logo" class="logo">
   </header>
+  <form id="loginForm">
 
-  <!-- Main -->
-  <main class="container">
-    <div class="login-box">
+                    <!-- USERNAME INPUT BOX -->
+                    <div class="input-group">
+                        <label for="username">Username</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Enter your student username"
+                            required
+                        >
+                    </div>
 
-      <h1 class="title">GDEH STUDENT PORTAL</h1>
+                    <!-- PASSWORD INPUT BOX -->
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="••••••••"
+                            required
+                        >
+                    </div>
 
-      <form>
-        <label for="username">Username</label>
-        <input id="username" type="text" name="username" required>
-
-        <label for="password">Password</label>
-        <input id="password" type="password" name="password" required>
-
-        <button type="submit" class="login-btn">LOGIN</button>
-      </form>
+                    <!-- HIGH CONTRAST SUBMIT INTERFACE -->
+                    <div class="btn-container">
+                    <button
+type="button"
+class="btn"
+id="loginBtn">
+Login
+</button>
+                    </div>
 
       <div class="links">
         <a href="student_signup.html">New Student Signup</a>
