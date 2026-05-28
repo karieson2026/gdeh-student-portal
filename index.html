@@ -1,279 +1,187 @@
+        
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GDEH Student Portal - Login</title>
-    <style>
-        /* GLOBAL RESET & VARIABLES */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GDEH Student Portal</title>
 
-        :root {
-            --bg-dark: #121212;
-            --bg-surface: #1a1a1a;
-            --bg-card: #242424;
-            --accent: #ff8c00; /* Signature Brand Orange */
-            --text-main: #ffffff; /* Pure White Content */
-            --border-color: #262626;
-        }
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
 
-        html, body {
-            height: 100%;
-        }
+    body {
+      background: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
 
-        body {
-            background: var(--bg-dark);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-        }
+    /* Header */
+    .header {
+      padding: 15px 25px;
+      display: flex;
+      align-items: center;
+    }
 
-        /* PAGE PACKAGING WRAPPER */
-        .page-content-wrapper {
-            flex: 1 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 20px;
-        }
+    .logo {
+      width: 70px;
+      height: auto;
+    }
 
-        .login-wrapper {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
+    /* Main Content */
+    .container {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
 
-        /* ENLARGED HIGH READABILITY LOGIN BOX */
-        .login-box {
-            width: 100%;
-            max-width: 480px;
-            background: var(--bg-surface);
-            border-radius: 12px;
-            padding: 40px 35px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
+    .login-box {
+      width: 340px;
+      background: #f9f9f9;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
 
-        /* BRANDING CENTERED INSIDE FORM */
-        .form-branding {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+    .title {
+      text-align: center;
+      color: #0b1f4d;
+      margin-bottom: 25px;
+      font-size: 24px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
 
-        .gdeh-logo {
-            width: 75px;
-            height: 75px;
-            object-fit: contain;
-            margin-bottom: 12px;
-        }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      color: #4d648d;
+      font-size: 14px;
+      font-weight: bold;
+    }
 
-        .gdeh-title {
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            color: var(--accent); /* Vibrant Orange */
-            text-transform: uppercase;
-        }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 18px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      color: black;
+      outline: none;
+      transition: border 0.3s ease;
+    }
 
-        /* INTEGRATED NOTICE BOX (REPLACED GDEH LOGIN) */
-        .form-notice-box {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 12px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
+    input:focus {
+      border-color: #001a4d;
+    }
 
-        .notice-text {
-            font-size: 11.5px;
-            color: var(--text-main);
-            line-height: 1.5;
-            font-weight: 400;
-            letter-spacing: 0.3px;
-        }
+    .login-btn {
+      width: 100%;
+      background: #001a4d;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 13px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
 
-        /* FORM FIELD ELEMENT LAYOUTS */
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin-bottom: 20px;
-            width: 100%;
-        }
+    .login-btn:hover {
+      background: #0b1f4d;
+    }
 
-        .input-group label {
-            font-size: 10px;
-            font-weight: 300;
-            color: var(--text-main);
-            text-transform: uppercase;
-            margin-bottom: 6px;
-            letter-spacing: 0.6px;
-        }
+    .links {
+      margin-top: 15px;
+      text-align: center;
+    }
 
-        .input-group input {
-            width: 100%;
-            background: var(--bg-card);
-            border: 1px solid #333333;
-            border-radius: 6px;
-            padding: 12px 14px;
-            color: var(--text-main);
-            font-size: 13.5px;
-            outline: none;
-            transition: border-color 0.2s ease;
-        }
+    .links a {
+      display: inline-block;
+      margin: 8px 10px 0;
+      text-decoration: none;
+      color: #001a4d;
+      font-size: 13px;
+      transition: color 0.3s ease;
+    }
 
-        .input-group input:focus {
-            border-color: var(--accent);
-        }
+    .links a:hover {
+      color: #0b1f4d;
+      text-decoration: underline;
+    }
 
-        .input-group input::placeholder {
-            color: #555555;
-        }
+    /* Footer */
+    footer {
+      background: #001a4d;
+      color: white;
+      text-align: center;
+      padding: 14px 10px;
+      margin-top: auto;
+    }
 
-        /* READABLE BOLD SUBMIT SYSTEM */
-        .btn-container {
-            margin-top: 25px;
-            margin-bottom: 20px;
-            width: 100%;
-        }
+    footer .footer-title {
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
 
-        .btn {
-            width: 100%;
-            background: var(--accent);
-            color: #000000; /* Dark text over orange for maximum legibility */
-            border: none;
-            border-radius: 6px;
-            padding: 14px;
-            font-size: 14px;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            cursor: pointer;
-            transition: opacity 0.15s ease;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
-        }
-
-        /* PORTAL NAVIGATION LINKS */
-        .link-btn {
-            display: block;
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 400;
-            margin-bottom: 12px;
-            transition: color 0.15s ease;
-        }
-
-        .link-btn:hover {
-            color: var(--accent);
-            text-decoration: underline;
-        }
-
-        /* PURE BRIGHT WHITE STICKY FOOTER */
-        .footer {
-            flex-shrink: 0;
-            text-align: center;
-            color: #ffffff !important; /* Pure Bright White forced */
-            padding: 16px;
-            font-size: 10px;
-            background: var(--bg-surface);
-            border-top: 1px solid var(--border-color);
-            letter-spacing: 0.3px;
-        }
-    </style>
+    footer .footer-links {
+      color: rgba(255,255,255,0.75);
+      font-size: 12px;
+    }
+  </style>
 </head>
 
 <body>
 
-    <!-- MAIN PAGE CONTENT WRAPPER -->
-    <div class="page-content-wrapper">
+  <!-- Header -->
+  <header class="header">
+    <img src="gdeh_logo.png" alt="GDEH Logo" class="logo">
+  </header>
 
-        <div class="login-wrapper">
+  <!-- Main -->
+  <main class="container">
+    <div class="login-box">
 
-            <!-- EXPANDED HIGH VISIBILITY LOGIN BOX -->
-            <div class="login-box">
+      <h1 class="title">GDEH STUDENT PORTAL</h1>
 
-                <!-- LOGO + BRANDING AT TOP CENTRE -->
-                <div class="form-branding">
-                    <img src="GDEH_logo.png" alt="GDEH Logo" class="gdeh-logo">
-                    <div class="gdeh-title">GDEH Student Portal</div>
-                </div>
+      <form>
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" required>
 
-                <!-- NOTICE MOVED HERE (REPLACED GDEH LOGIN) -->
-                <div class="form-notice-box">
-                    <div class="notice-text">
-                        Welcome to GDEH Student Portal • Admissions Open • Secure Student Management System
-                    </div>
-                </div>
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" required>
 
-                <form id="loginForm">
+        <button type="submit" class="login-btn">LOGIN</button>
+      </form>
 
-                    <!-- USERNAME INPUT BOX -->
-                    <div class="input-group">
-                        <label for="username">Username</label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            placeholder="Enter your student username"
-                            required
-                        >
-                    </div>
-
-                    <!-- PASSWORD INPUT BOX -->
-                    <div class="input-group">
-                        <label for="password">Password</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="••••••••"
-                            required
-                        >
-                    </div>
-
-                    <!-- HIGH CONTRAST SUBMIT INTERFACE -->
-                    <div class="btn-container">
-                    <button
-type="button"
-class="btn"
-id="loginBtn">
-Login
-</button>
-                    </div>
-
-                    <!-- HELPFUL LINKS -->
-                    <a href="student_signup.html" class="link-btn">
-                        New Student? Create Account
-                    </a>
-
-                    <a href="forgot_password.html" class="link-btn">
-                        Forgot Password?
-                    </a>
-
-                </form>
-
-            </div>
-
-        </div>
+      <div class="links">
+        <a href="student_signup.html">New Student Signup</a>
+        <a href="forgot_password.html">Forgot Password</a>
+      </div>
 
     </div>
+  </main>
 
-    <!-- PURE BRIGHT WHITE ANCHORED FOOTER -->
-    <footer class="footer">
-        © GDEH STUDENT PORTAL | Secure Student Management System
-    </footer>
+  <!-- Footer -->
+  <footer>
+    <div class="footer-title">
+      GDEH STUDENT PORTAL
+    </div>
+
+    <div class="footer-links">
+      All rights reserved Secure Management Systems
+    </div>
+  </footer>
+
 
     <!-- EXTERNAL APPLICATION JAVASCRIPT -->
     <script src="index.js"></script>
