@@ -4,18 +4,12 @@
 <head>
 
 <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0"/>
+<title>GDEH Student Signup Portal</title>
 
-<title>
-GDEH Student Signup Portal
-</title>
-
-<link rel="stylesheet" href="student_signup.css">
-
-</head>
 <style>
+
 /* =========================
    GLOBAL RESET
 ========================= */
@@ -26,11 +20,20 @@ GDEH Student Signup Portal
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 }
 
+:root{
+    --navy:#0b1f3a;
+    --light-navy:#506680;
+    --white:#ffffff;
+}
+
+/* =========================
+   BODY
+========================= */
 body{
     display:flex;
     flex-direction:column;
     min-height:100vh;
-    background:#0b0b0b;
+    background:#ffffff;
 }
 
 /* =========================
@@ -41,20 +44,17 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    padding:24px;
+    padding:28px 18px;
 }
 
 /* =========================
-   CARD
+   CONTAINER
 ========================= */
 .signup-card{
-    background:#ffffff;
-    padding:24px 28px;
-    border-radius:8px;
     width:100%;
-    max-width:440px;
-    box-shadow:0 12px 32px rgba(0,0,0,0.5);
-    border:1px solid #222222;
+    max-width:430px;
+    background:#ffffff;
+    padding:8px;
 }
 
 /* =========================
@@ -62,39 +62,30 @@ body{
 ========================= */
 .branding-header{
     text-align:center;
-    margin-bottom:18px;
-    border-bottom:2px solid #ff6600;
-    padding-bottom:12px;
+    margin-bottom:22px;
 }
 
-.gdeh-logo-box{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    width:54px;
-    height:54px;
-    background:#000;
-    color:#fff;
-    font-size:14px;
-    font-weight:900;
-    letter-spacing:1px;
-    border-radius:4px;
-    border:2px solid #ff6600;
+.gdeh-logo{
+    width:78px;
+    height:78px;
+    object-fit:contain;
     margin-bottom:8px;
 }
 
 .branding-header h1{
-    color:#000;
-    font-size:15px;
-    font-weight:800;
-    letter-spacing:.5px;
+    color:var(--navy);
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:1px;
     text-transform:uppercase;
+    font-family:Georgia, serif;
 }
 
 .branding-header p{
-    color:#666;
-    font-size:10px;
-    margin-top:2px;
+    color:var(--light-navy);
+    font-size:9px;
+    margin-top:4px;
+    letter-spacing:.4px;
 }
 
 /* =========================
@@ -103,32 +94,29 @@ body{
 .portal-message{
     display:none;
     padding:8px 10px;
-    font-size:11px;
-    font-weight:600;
     border-radius:4px;
-    margin-bottom:14px;
+    margin-bottom:12px;
+    font-size:10px;
 }
 
 .portal-message.error{
     display:block;
-    background:#fce8e6;
+    background:#ffecec;
     color:#cc0000;
-    border:1px solid #f3c2bc;
 }
 
 .portal-message.success{
     display:block;
-    background:#e6f4ea;
-    color:#137333;
-    border:1px solid #c2e7cc;
+    background:#edfdf3;
+    color:#067647;
 }
 
 /* =========================
-   FORM LAYOUT
+   ROWS
 ========================= */
 .row{
     display:flex;
-    gap:12px;
+    gap:10px;
 }
 
 .row .input-group{
@@ -136,32 +124,36 @@ body{
 }
 
 .row .input-group.shrink{
-    flex:0 0 110px;
+    flex:0 0 105px;
 }
 
+/* =========================
+   INPUT GROUP
+========================= */
 .input-group,
 .otp-container{
-    margin-bottom:10px;
-    position:relative;
+    margin-bottom:11px;
 }
 
+/* =========================
+   LABELS
+========================= */
 label{
     display:block;
-    font-size:10px;
-    font-weight:700;
-    color:#111;
+    font-size:9px;
+    font-weight:600;
+    color:var(--light-navy);
     margin-bottom:4px;
     text-transform:uppercase;
-    letter-spacing:.3px;
+    letter-spacing:.5px;
 }
 
 .required{
-    color:#ff6600;
-    margin-left:2px;
+    color:var(--navy);
 }
 
 .field-error{
-    font-size:9px;
+    font-size:8px;
     color:#cc0000;
     margin-top:2px;
     display:none;
@@ -177,37 +169,36 @@ input[type="tel"],
 input[type="file"],
 select{
     width:100%;
-    padding:7px 9px;
-    font-size:11px;
-    color:#000;
-    background:#fff;
-    border:1px solid #ccc;
-    border-radius:4px;
+    padding:8px 9px;
+    font-size:10px;
+    color:#000000;
+    background:#ffffff;
+    border:1px solid #cbd5e1;
+    border-radius:5px;
     outline:none;
-    transition:all .2s ease;
+    transition:.2s ease;
 }
 
 input[type="file"]{
-    padding:5px 6px;
-    font-size:10px;
-    background:#fafafa;
+    padding:6px;
     cursor:pointer;
+}
+
+input::placeholder{
+    color:#8b8b8b;
+    font-size:10px;
 }
 
 input:focus,
 select:focus{
-    border-color:#ff6600;
-    box-shadow:0 0 0 2px rgba(255,102,0,.12);
-}
-
-input.invalid-field{
-    border-color:#cc0000 !important;
+    border-color:var(--navy);
+    box-shadow:0 0 10px rgba(11,31,58,0.15);
 }
 
 select{
-    cursor:pointer;
     appearance:none;
-    background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    cursor:pointer;
+    background-image:url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b1f3a' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
     background-repeat:no-repeat;
     background-position:right 10px center;
     background-size:10px;
@@ -227,25 +218,28 @@ select{
 
 .otp-send-btn{
     padding:0 12px;
-    background:#000;
-    color:#fff;
-    border:1px solid #000;
-    border-radius:4px;
-    font-size:10px;
+    background:var(--navy);
+    color:#ffffff;
+    border:none;
+    border-radius:5px;
+    font-size:9px;
     font-weight:700;
     cursor:pointer;
-    white-space:nowrap;
     text-transform:uppercase;
-    transition:.2s ease;
+    transition:.25s ease;
+    box-shadow:
+        0 0 10px rgba(11,31,58,0.25),
+        0 0 20px rgba(11,31,58,0.12);
 }
 
 .otp-send-btn:hover{
-    background:#ff6600;
-    border-color:#ff6600;
+    box-shadow:
+        0 0 16px rgba(11,31,58,0.40),
+        0 0 28px rgba(11,31,58,0.20);
 }
 
 .otp-code-box{
-    max-width:115px;
+    max-width:120px;
 }
 
 .otp-code-box input{
@@ -255,28 +249,28 @@ select{
 }
 
 .otp-timer-area{
-    margin-top:6px;
+    margin-top:5px;
     display:flex;
     align-items:center;
-    gap:6px;
+    gap:5px;
 }
 
 .otp-label{
-    font-size:10px;
-    color:#666;
+    font-size:9px;
+    color:#777;
 }
 
 .otp-timer{
-    font-size:11px;
+    font-size:10px;
+    color:var(--navy);
     font-weight:700;
-    color:#ff6600;
 }
 
 .otp-small-text{
-    font-size:9px;
-    color:#666;
-    margin-top:3px;
     display:block;
+    margin-top:3px;
+    font-size:8px;
+    color:#777;
 }
 
 /* =========================
@@ -289,59 +283,55 @@ select{
 }
 
 .signup-btn{
-    padding:8px 24px;
-    font-size:11px;
-    font-weight:700;
-    border-radius:20px;
+    min-width:165px;
+    padding:10px 22px;
     border:none;
-    min-width:150px;
+    border-radius:25px;
+    background:var(--navy);
+    color:#ffffff;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.8px;
     text-transform:uppercase;
-    letter-spacing:.5px;
-    background:#e5e5e5;
-    color:#999;
-    cursor:not-allowed;
-    transition:.2s ease;
-}
-
-.signup-btn.active{
-    background:#ff6600;
-    color:#fff;
     cursor:pointer;
+    transition:.25s ease;
+    box-shadow:
+        0 0 12px rgba(11,31,58,0.28),
+        0 0 22px rgba(11,31,58,0.14);
 }
 
-.signup-btn.active:hover{
-    background:#e05500;
+.signup-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:
+        0 0 18px rgba(11,31,58,0.45),
+        0 0 30px rgba(11,31,58,0.22);
 }
 
 /* =========================
    FOOTER
 ========================= */
 .portal-footer{
-    width:100%;
-    background:#111;
-    border-top:1px solid #222;
-    padding:16px 20px;
+    background:var(--navy);
     text-align:center;
+    padding:18px;
 }
 
 .portal-footer p{
+    color:#ffffff;
     font-size:10px;
-    color:#888;
-    font-weight:500;
-    letter-spacing:.3px;
-    line-height:1.6;
+    line-height:1.7;
+    letter-spacing:.4px;
 }
 
 .portal-footer .secure-tag{
     font-size:9px;
-    color:#ff6600;
-    font-weight:700;
+    font-weight:600;
     text-transform:uppercase;
-    letter-spacing:.6px;
+    letter-spacing:.8px;
 }
 
 /* =========================
-   RESPONSIVE
+   MOBILE
 ========================= */
 @media(max-width:520px){
 
@@ -353,12 +343,11 @@ select{
         flex:1;
     }
 
-    .signup-card{
-        padding:20px;
-    }
-
 }
+
 </style>
+
+</head>
 
 <body>
 
@@ -369,35 +358,35 @@ select{
 <!-- BRANDING -->
 <div class="branding-header">
 
-<div class="gdeh-logo-box">
-GDEH
-</div>
+<img
+src="gdeh_logo.png"
+alt="GDEH Logo"
+class="gdeh-logo"
+>
 
 <h1>
-GDEH Student Sign-Up Portal
+GDEH STUDENT SIGNUP PORTAL
 </h1>
 
 <p>
-Registration requires instant email identity confirmation
+Secure Student Registration System
 </p>
 
 </div>
 
-<!-- ALERT BOX -->
-<div id="portalMessageBox"
+<!-- ALERT -->
+<div
+id="portalMessageBox"
 class="portal-message">
 </div>
 
-<!-- FORM START -->
+<!-- FORM -->
 <form
 id="signupForm"
 method="POST"
 enctype="multipart/form-data"
 novalidate
 >
-
-<!-- PASTE FORM HERE -->
-<form id="signupForm" method="POST" enctype="multipart/form-data" novalidate>
 
 <!-- FULL NAME -->
 <div class="input-group">
@@ -413,10 +402,6 @@ name="full_name"
 placeholder="John Doe"
 required
 >
-
-<div class="field-error" id="error-fullname">
-Please enter your full name.
-</div>
 
 </div>
 
@@ -434,10 +419,6 @@ name="phone"
 placeholder="+254700000000"
 required
 >
-
-<div class="field-error" id="error-phone">
-Enter valid phone number.
-</div>
 
 </div>
 
@@ -634,7 +615,6 @@ Send OTP
 
 </div>
 
-<!-- OTP TIMER -->
 <div class="otp-timer-area">
 
 <small class="otp-label">
@@ -679,7 +659,6 @@ Enter OTP sent to your Gmail.
 type="submit"
 id="submitBtn"
 class="signup-btn"
-disabled
 >
 Create Account
 </button>
@@ -687,8 +666,6 @@ Create Account
 </div>
 
 </form>
-</form>
-<!-- FORM END -->
 
 </div>
 </div>
@@ -697,8 +674,7 @@ Create Account
 <footer class="portal-footer">
 
 <p>
-&copy; GDEH STUDENT PORTAL |
-All rights reserved
+© GDEH STUDENT PORTAL | All Rights Reserved
 </p>
 
 <p class="secure-tag">
@@ -707,7 +683,6 @@ Secure Management Systems
 
 </footer>
 
-<!-- JS -->
 <script src="student_signup.js"></script>
 
 </body>
