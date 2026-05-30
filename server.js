@@ -822,8 +822,7 @@ app.post("/forgot-password", async (req, res) => {
 
         // 4. Create reset link
         const resetLink =
-`${process.env.FRONTEND_URL}/reset_password.html?token=${resetToken}`;
-
+`https://gdeh-student-portal-1.onrender.com/reset_password.html?token=${resetToken}`;
         console.log("RESET LINK:", resetLink);
 
         // 5. SEND EMAIL (INSIDE ROUTE)
