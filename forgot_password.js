@@ -1,62 +1,59 @@
-document
-.getElementById("resetBtn")
-.addEventListener("click", async () => {
+document.addEventListener("DOMContentLoaded", () => {
 
-    const emailOrUsername =
-        document
-        .getElementById("email_username")
-        .value
-        .trim();
+    const form = document.getElementById("forgotPasswordForm");
 
-    if (!emailOrUsername) {
-        alert("Enter your email or username");
-        return;
-    }
+    form.addEventListener("submit", async (e) => {
 
-    try {
+        e.preventDefault();
 
-        const res = await fetch(
-            "/forgot-password",
-            {
+        const identifier =
+            document.getElementById("identifier").value.trim();
+
+        if (!identifier) {
+            alert("Enter your email or username");
+            return;
+        }
+
+        try {
+
+            const response = await fetch("/forgot-password", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    emailOrUsername
+                    identifier
                 })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+
+                alert(
+                    "Password reset link has been sent to your email."
+                );
+
+                form.reset();
+
+            } else {
+
+                alert(
+                    data.message || "Request failed"
+                );
+
             }
-        );
 
-        const data = await res.json();
+        } catch (err) {
 
-        if (data.success) {
-
-            alert(
-                "Password reset link has been sent to your email."
-            );
-
-            document.getElementById(
-                "email_username"
-            ).value = "";
-
-        } else {
+            console.error(err);
 
             alert(
-                data.message ||
-                "Failed to send reset link"
+                "Unable to connect to server."
             );
 
         }
 
-    } catch (err) {
-
-        console.error(err);
-
-        alert(
-            "Server error. Please try again."
-        );
-
-    }
+    });
 
 });
