@@ -1,20 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const form = document.getElementById("forgotPasswordForm");
+    const resetBtn = document.getElementById("resetBtn");
+    const inputField = document.getElementById("email_username");
 
-    form.addEventListener("submit", async (e) => {
+    resetBtn.addEventListener("click", async () => {
 
-        e.preventDefault();
-
-        const identifier =
-            document.getElementById("identifier").value.trim();
+        const identifier = inputField.value.trim();
 
         if (!identifier) {
-            alert("Enter your email or username");
+            alert("Please enter your email or username.");
+            inputField.focus();
             return;
         }
 
         try {
+
+            resetBtn.disabled = true;
+            resetBtn.textContent = "Sending...";
 
             const response = await fetch("/forgot-password", {
                 method: "POST",
@@ -31,27 +33,41 @@ document.addEventListener("DOMContentLoaded", () => {
             if (data.success) {
 
                 alert(
-                    "Password reset link has been sent to your email."
+                    "Password reset link has been sent to your registered email."
                 );
 
-                form.reset();
+                inputField.value = "";
 
             } else {
 
                 alert(
-                    data.message || "Request failed"
+                    data.message ||
+                    "Failed to send password reset link."
                 );
 
             }
 
-        } catch (err) {
+        } catch (error) {
 
-            console.error(err);
+            console.error("Forgot Password Error:", error);
 
             alert(
-                "Unable to connect to server."
+                "Unable to connect to the server. Please try again later."
             );
 
+        } finally {
+
+            resetBtn.disabled = false;
+            resetBtn.textContent = "Reset Password";
+
+        }
+
+    });
+
+    inputField.addEventListener("keypress", (event) => {
+
+        if (event.key === "Enter") {
+            resetBtn.click();
         }
 
     });
