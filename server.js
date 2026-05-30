@@ -1,3 +1,4 @@
+~/gdeh_STportal $ cat server.js
 require("dotenv").config();
 
 const express = require("express");
@@ -6,7 +7,7 @@ const bcrypt = require("bcryptjs");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
 const { Pool } = require("pg");
-
+const crypto = require("crypto");
 const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -86,17 +87,46 @@ app.post("/send-otp", async (req, res) => {
         );
 
         await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: "GDEH OTP Verification",
-            html: `<h2>Your OTP is: ${otp}</h2>`
-        });
+    from: `"GDEH Support" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: "GDEH OTP Verification",
+    html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e5e5e5; border-radius: 10px; background-color: #f9f9f9;">
+            <h2 style="color: #2c3e50; text-align: center;">
+                OTP Verification
+            </h2>
+
+            <p style="font-size: 16px; color: #333;">
+                Hello,
+            </p>
+
+            <p style="font-size: 16px; color: #333;">
+                Use the following One-Time Password (OTP) to complete your verification process:
+            </p>
+
+            <div style="text-align: center; margin: 30px 0;">
+                <span style="display: inline-block; padding: 15px 30px; font-size: 28px; font-weight: bold; letter-spacing: 5px; background-color: #2c3e50; color: #ffffff; border-radius: 8px;">
+                    ${otp}
+                </span>
+            </div>
+
+            <p style="font-size: 14px; color: #555;">
+                This OTP is valid for <strong>5 minutes</strong>. Please do not share it with anyone for security reasons.
+            </p>
+
+            <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
+
+            <p style="font-size: 12px; color: #888; text-align: center;">
+                © ${new Date().getFullYear()} GDEH. All rights reserved.
+            </p>
+        </div>
+    `
+});
 
         res.json({ success: true });
 
     } catch (err) {
-        console.log(err);
-        res.json({ success: false });
+        console.log(err);        res.json({ success: false });
     }
 });
 
@@ -155,84 +185,114 @@ app.post("/verify-otp", async (req, res) => {
 // ==========================================
 
 
-// NORMALIZE DATA
-const cleanEmail = email.trim().toLowerCase();
-const cleanUsername = username.trim().toLowerCase();
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/");
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + "_" + file.originalname);
+    }
+});
 
-// CHECK EMAIL
-const emailExists = await pool.query(
-    `SELECT id FROM signup_table WHERE LOWER(email)=LOWER($1)`,
-    [cleanEmail]
-);
+const upload = multer({ storage });
 
-if (emailExists.rows.length > 0) {
-    return res.json({
-        success: false,
-        message: "Email already exists"
-    });
-}
+app.post("/signup", upload.single("profile_photo"), async (req, res) => {
 
-// CHECK USERNAME
-const usernameExists = await pool.query(
-    `SELECT id FROM signup_table WHERE LOWER(create_username)=LOWER($1)`,
-    [cleanUsername]
-);
+    try {
 
-if (usernameExists.rows.length > 0) {
-    return res.json({
-        success: false,
-        message: "Username already exists"
-    });
-}
+        const {
+            full_name,
+            phone,
+            email,
+            address,
+            county,
+            zip_code,
+            course,
+            username,
+            password,
+            otp
+        } = req.body;
 
-// HASH PASSWORD
-const hashedPassword = await bcrypt.hash(password, 10);
+        // VERIFY OTP
+        const otpCheck = await pool.query(
+            `SELECT * FROM otp_store
+             WHERE LOWER(email)=LOWER($1)
+             AND otp_code=$2`,
+            [email.trim().toLowerCase(), otp.trim()]
+        );
 
-// PROFILE PHOTO
-let photoPath = "";
-if (req.file) {
-    photoPath = req.file.path;
-}
+        if (otpCheck.rows.length === 0) {
+            return res.json({ success: false, message: "Invalid OTP" });
+        }
 
-// INSERT USER
-await pool.query(
-    `INSERT INTO signup_table(
-        full_names,
-        phone_number,
-        email,
-        address,
-        county,
-        zip_code,
-        course,
-        profile_photo,
-        create_username,
-        create_password,
-        role
-    )
-    VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'student')`,
-    [
-        full_name,
-        phone,
-        cleanEmail,
-        address,
-        county,
-        zip_code,
-        course,
-        photoPath,
-        cleanUsername,
-        hashedPassword
-    ]
-);
+        if (new Date() > new Date(otpCheck.rows[0].otp_expires_at)) {
+            return res.json({ success: false, message: "OTP expired" });
+        }
 
-// DELETE USED OTP
-await pool.query(
-    `DELETE FROM otp_store WHERE LOWER(email)=LOWER($1)`,
-    [cleanEmail]
-);
+        // CHECK EMAIL
+        const emailExists = await pool.query(
+            `SELECT * FROM signup_table WHERE email=$1`,
+            [email]
+        );
 
-res.json({
-    success: true,
-    message: "Signup successful"
+        if (emailExists.rows.length > 0) {
+            return res.json({
+                success: false,
+                message: "Email already exists"
+            });
+        }
+
+        // HASH PASSWORD
+        const bcrypt = require("bcryptjs");
+        const hashed = await bcrypt.hash(password, 10);
+
+        // PROFILE PHOTO
+        let photoPath = "";
+        if (req.file) {
+            photoPath = req.file.path;
+        }
+
+        // INSERT USER
+        await pool.query(
+            `INSERT INTO signup_table(
+                full_names,
+                phone_number,
+                email,
+                address,
+                county,
+                zip_code,
+                course,
+                profile_photo,
+                create_username,
+                create_password,
+                role
+            )
+            VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,'student')`,
+            [
+                full_name,
+                phone,
+                email,
+                address,
+                county,
+                zip_code,
+                course,
+                photoPath,
+                username,
+                hashed
+            ]
+        );
+
+        await pool.query(
+            `DELETE FROM otp_store WHERE email=$1`,
+            [email]
+        );
+
+        res.json({ success: true });
+
+    } catch (err) {
+        console.log(err);
+        res.json({ success: false, message: "Signup failed" });
+    }
 });
 
 
@@ -734,171 +794,145 @@ app.post("/register-unit", async (req, res) => {
 
 });
 
-app.post("/reset-password", async (req,res)=>{
 
-  const { token, newPassword } = req.body;
-
-  try{
-
-    const user = await pool.query(
-      `SELECT * FROM signup_table
-       WHERE reset_token=$1
-       AND reset_token_expiry > NOW()`,
-      [token]
-    );
-
-    if(user.rows.length === 0){
-      return res.json({
-        success:false,
-        message:"Invalid or expired token"
-      });
-    }
-
-    await pool.query(
-      `UPDATE signup_table
-       SET create_password=$1,
-           reset_token=NULL,
-           reset_token_expiry=NULL
-       WHERE reset_token=$2`,
-      [newPassword, token]
-    );
-
-    res.json({
-      success:true,
-      message:"Password reset successful"
-    });
-
-  }catch(err){
-
-    console.log(err);
-
-    res.json({
-      success:false,
-      message:"Server error"
-    });
-
-  }
-
-});
-
-const crypto = require("crypto");
-
+// ===============================
+// FORGOT PASSWORD
+// ===============================
 app.post("/forgot-password", async (req, res) => {
+
+    const { identifier } = req.body;
 
     try {
 
-        const email = req.body.email?.trim().toLowerCase();
-
-        const user = await pool.query(
+        // 1. Find user
+        const userResult = await pool.query(
             `SELECT * FROM signup_table
-             WHERE LOWER(email)=LOWER($1)`,
-            [email]
+             WHERE email = $1 OR create_username = $1`,
+            [identifier]
         );
 
-        if (user.rows.length === 0) {
+        if (userResult.rows.length === 0) {
             return res.json({
                 success: false,
-                message: "Email not found"
+                message: "User not found"
             });
         }
 
-        const token = crypto.randomBytes(32).toString("hex");
+        const user = userResult.rows[0];
 
+        // 2. Generate token
+        const resetToken = crypto.randomBytes(32).toString("hex");
+        const expiryTime = new Date(Date.now() + 5 * 60 * 1000);
+
+        // 3. Save token
         await pool.query(
             `UPDATE signup_table
-             SET reset_token=$1,
-                 reset_token_expiry=NOW() + INTERVAL '1 hour'
-             WHERE LOWER(email)=LOWER($2)`,
-            [token, email]
+             SET reset_token = $1,
+                 reset_token_expiry = $2
+             WHERE id = $3`,
+            [resetToken, expiryTime, user.id]
         );
 
+        // 4. Create reset link
         const resetLink =
-            `${process.env.FRONTEND_URL}/forgot_password.html?token=${token}`;
+            `http://localhost:3000/reset_password.html?token=${resetToken}`;
 
+        console.log("RESET LINK:", resetLink);
+
+        // 5. SEND EMAIL (INSIDE ROUTE)
         await transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: "Password Reset",
+            from: `"GDEH Support" <${process.env.EMAIL_USER}>`,
+            to: user.email,
+            subject: "Reset Your Password",
             html: `
-                <h2>Password Reset Request</h2>
-                <p>Click the link below:</p>
-                <a href="${resetLink}">${resetLink}</a>
-                <p>Expires in 1 hour.</p>
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin:auto; padding:20px; border:1px solid #ddd; border-radius:10px; background:#f9f9f9;">
+                    <h2 style="text-align:center; color:#2c3e50;">
+                        Password Reset Request
+                    </h2>
+
+                    <p>Hello ${user.full_names || "Student"},</p>
+
+                    <p>Click below to reset your password:</p>
+
+                    <div style="text-align:center; margin:30px 0;">
+                        <a href="${resetLink}"
+                           style="background:#2c3e50;color:white;padding:12px 25px;text-decoration:none;border-radius:6px;">
+                            Reset Password
+                        </a>
+                    </div>
+
+                    <p>This link expires in 5 minutes.</p>
+                </div>
             `
         });
 
-        res.json({
+        // 6. Response
+        return res.json({
             success: true,
-            message: "Reset link sent"
+            message: "Reset link sent to email"
         });
 
-    } catch (err) {
+    } catch (error) {
+        console.log("FORGOT PASSWORD ERROR:", error);
 
-        console.log(err);
-
-        res.json({
+        return res.status(500).json({
             success: false,
             message: "Server error"
         });
-
     }
-
 });
+
+// ===============================
+// RESET PASSWORD
+// ===============================
 
 app.post("/reset-password", async (req, res) => {
 
+    const { token, newPassword } = req.body;
+
     try {
 
-        const { token, newPassword } = req.body;
-
-        if (!token || !newPassword) {
-            return res.json({
-                success: false,
-                message: "Token and password required"
-            });
-        }
-
-        const user = await pool.query(
-            `SELECT *
-             FROM signup_table
-             WHERE reset_token=$1
+        // Verify token
+        const userResult = await pool.query(
+            `SELECT * FROM signup_table
+             WHERE reset_token = $1
              AND reset_token_expiry > NOW()`,
             [token]
         );
 
-        if (user.rows.length === 0) {
+        if (userResult.rows.length === 0) {
             return res.json({
                 success: false,
                 message: "Invalid or expired token"
             });
         }
 
-        // HASH NEW PASSWORD
+        const user = userResult.rows[0];
+
+        // Hash password
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
+        // Update password + clear token (FIXED COLUMN NAME)
         await pool.query(
             `UPDATE signup_table
-             SET create_password=$1,
-                 reset_token=NULL,
-                 reset_token_expiry=NULL
-             WHERE reset_token=$2`,
-            [hashedPassword, token]
+             SET create_password = $1,
+                 reset_token = NULL,
+                 reset_token_expiry = NULL
+             WHERE id = $2`,
+            [hashedPassword, user.id]
         );
 
-        res.json({
+        return res.json({
             success: true,
             message: "Password reset successful"
         });
 
-    } catch (err) {
+    } catch (error) {
+        console.log("RESET PASSWORD ERROR:", error);
 
-        console.log(err);
-
-        res.json({
+        return res.status(500).json({
             success: false,
             message: "Server error"
         });
-
     }
-
 });
