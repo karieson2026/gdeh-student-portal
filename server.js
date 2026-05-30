@@ -53,8 +53,7 @@ function generateOTP() {
 
 
 // ==========================================
-// PORTION 4: EMAIL CONFIGURATION
-// Nodemailer Setup (Gmail)
+// EMAIL CONFIGURATION
 // ==========================================
 const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -64,70 +63,58 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// Verify connection on startup
+transporter.verify((error) => {
+    if (error) {
+        console.log("❌ Email Error:", error);
+    } else {
+        console.log("✅ Email Server Ready");
+    }
+});
+
 
 
 // ==========================================
 // PORTION 5: OTP ROUTES
 // Send OTP & Verify OTP APIs
 // ==========================================
-app.post("/send-otp", async (req, res) => {
-    try {
-        const email = req.body.email?.trim().toLowerCase();
-
-        const otp = generateOTP();
-
-        const expires = new Date(Date.now() + 5 * 60 * 1000);
-
-        await pool.query(
-            `INSERT INTO otp_store(email, otp_code, otp_expires_at)
-             VALUES($1,$2,$3)
-             ON CONFLICT(email)
-             DO UPDATE SET otp_code=$2, otp_expires_at=$3`,
-            [email, otp, expires]
-        );
-
-        await transporter.sendMail({
+await transporter.sendMail({
     from: `"GDEH Support" <${process.env.EMAIL_USER}>`,
     to: email,
     subject: "GDEH OTP Verification",
     html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e5e5e5; border-radius: 10px; background-color: #f9f9f9;">
-            <h2 style="color: #2c3e50; text-align: center;">
-                OTP Verification
-            </h2>
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:20px;border:1px solid #ddd;border-radius:10px;">
+        <h2 style="text-align:center;color:#1e3a8a;">
+            Email Verification
+        </h2>
 
-            <p style="font-size: 16px; color: #333;">
-                Hello,
-            </p>
+        <p>Hello,</p>
 
-            <p style="font-size: 16px; color: #333;">
-                Use the following One-Time Password (OTP) to complete your verification process:
-            </p>
+        <p>
+            Use the One-Time Password (OTP) below to complete your registration:
+        </p>
 
-            <div style="text-align: center; margin: 30px 0;">
-                <span style="display: inline-block; padding: 15px 30px; font-size: 28px; font-weight: bold; letter-spacing: 5px; background-color: #2c3e50; color: #ffffff; border-radius: 8px;">
-                    ${otp}
-                </span>
-            </div>
-
-            <p style="font-size: 14px; color: #555;">
-                This OTP is valid for <strong>5 minutes</strong>. Please do not share it with anyone for security reasons.
-            </p>
-
-            <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;" />
-
-            <p style="font-size: 12px; color: #888; text-align: center;">
-                © ${new Date().getFullYear()} GDEH. All rights reserved.
-            </p>
+        <div style="text-align:center;margin:30px 0;">
+            <span style="background:#1e3a8a;color:#fff;padding:15px 30px;font-size:28px;font-weight:bold;border-radius:8px;letter-spacing:4px;">
+                ${otp}
+            </span>
         </div>
+
+        <p>
+            This code expires in <strong>5 minutes</strong>.
+        </p>
+
+        <p>
+            If you did not request this code, please ignore this email.
+        </p>
+
+        <hr>
+
+        <p style="font-size:12px;color:#777;text-align:center;">
+            © ${new Date().getFullYear()} GDEH Student Portal
+        </p>
+    </div>
     `
-});
-
-        res.json({ success: true });
-
-    } catch (err) {
-        console.log(err);        res.json({ success: false });
-    }
 });
 
 
@@ -835,36 +822,58 @@ app.post("/forgot-password", async (req, res) => {
 
         // 4. Create reset link
         const resetLink =
-            `http://localhost:3000/reset_password.html?token=${resetToken}`;
+`${process.env.FRONTEND_URL}/reset_password.html?token=${resetToken}`;
 
         console.log("RESET LINK:", resetLink);
 
         // 5. SEND EMAIL (INSIDE ROUTE)
         await transporter.sendMail({
-            from: `"GDEH Support" <${process.env.EMAIL_USER}>`,
-            to: user.email,
-            subject: "Reset Your Password",
-            html: `
-                <div style="font-family: Arial, sans-serif; max-width: 600px; margin:auto; padding:20px; border:1px solid #ddd; border-radius:10px; background:#f9f9f9;">
-                    <h2 style="text-align:center; color:#2c3e50;">
-                        Password Reset Request
-                    </h2>
+    from: `"GDEH Support" <${process.env.EMAIL_USER}>`,
+    to: user.email,
+    subject: "Reset Your Password",
+    html: `
+    <div style="font-family:Arial,sans-serif;max-width:600px;margin:auto;padding:20px;border:1px solid #ddd;border-radius:10px;">
+        <h2 style="text-align:center;color:#dc2626;">
+            Password Reset Request
+        </h2>
 
-                    <p>Hello ${user.full_names || "Student"},</p>
+        <p>Hello ${user.full_names || "Student"},</p>
 
-                    <p>Click below to reset your password:</p>
+        <p>
+            We received a request to reset your password.
+        </p>
 
-                    <div style="text-align:center; margin:30px 0;">
-                        <a href="${resetLink}"
-                           style="background:#2c3e50;color:white;padding:12px 25px;text-decoration:none;border-radius:6px;">
-                            Reset Password
-                        </a>
-                    </div>
+        <div style="text-align:center;margin:30px 0;">
+            <a href="${resetLink}"
+               style="background:#dc2626;color:white;padding:14px 25px;text-decoration:none;border-radius:6px;font-weight:bold;">
+               Reset Password
+            </a>
+        </div>
 
-                    <p>This link expires in 5 minutes.</p>
-                </div>
-            `
-        });
+        <p>
+            Or copy and paste this link into your browser:
+        </p>
+
+        <p>
+            ${resetLink}
+        </p>
+
+        <p>
+            This link will expire in <strong>5 minutes</strong>.
+        </p>
+
+        <p>
+            If you did not request a password reset, you can safely ignore this email.
+        </p>
+
+        <hr>
+
+        <p style="font-size:12px;color:#777;text-align:center;">
+            © ${new Date().getFullYear()} GDEH Student Portal
+        </p>
+    </div>
+    `
+});
 
         // 6. Response
         return res.json({
