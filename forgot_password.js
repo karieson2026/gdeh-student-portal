@@ -1,34 +1,62 @@
-document.getElementById("resetBtn")
-.addEventListener("click", async ()=>{
+document
+.getElementById("resetBtn")
+.addEventListener("click", async () => {
 
-  const emailOrUsername =
-    document.getElementById("email_username").value;
+    const emailOrUsername =
+        document
+        .getElementById("email_username")
+        .value
+        .trim();
 
-  const res = await fetch("/forgot-password",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
-    },
-    body:JSON.stringify({
-      emailOrUsername
-    })
-  });
+    if (!emailOrUsername) {
+        alert("Enter your email or username");
+        return;
+    }
 
-  const data = await res.json();
+    try {
 
-  if(data.success){
+        const res = await fetch(
+            "/forgot-password",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    emailOrUsername
+                })
+            }
+        );
 
-    alert("Reset token: " + data.token);
+        const data = await res.json();
 
-    localStorage.setItem(
-      "reset_token",
-      data.token
-    );
+        if (data.success) {
 
-    window.location.href="reset_password.html";
+            alert(
+                "Password reset link has been sent to your email."
+            );
 
-  }else{
-    alert(data.message);
-  }
+            document.getElementById(
+                "email_username"
+            ).value = "";
+
+        } else {
+
+            alert(
+                data.message ||
+                "Failed to send reset link"
+            );
+
+        }
+
+    } catch (err) {
+
+        console.error(err);
+
+        alert(
+            "Server error. Please try again."
+        );
+
+    }
 
 });
