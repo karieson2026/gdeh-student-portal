@@ -1,24 +1,25 @@
-document.addEventListener("DOMContentLoaded", () => {
+const resetBtn = document.getElementById("resetBtn");
 
-    const resetBtn = document.getElementById("resetBtn");
-    const inputField = document.getElementById("email_username");
+resetBtn.addEventListener("click", async () => {
 
-    resetBtn.addEventListener("click", async () => {
+    const identifier = document
+        .getElementById("email_username")
+        .value
+        .trim();
 
-        const identifier = inputField.value.trim();
+    if (!identifier) {
+        alert("Enter email or username");
+        return;
+    }
 
-        if (!identifier) {
-            alert("Please enter your email or username.");
-            inputField.focus();
-            return;
-        }
+    resetBtn.disabled = true;
+    resetBtn.innerText = "Please wait...";
 
-        try {
+    try {
 
-            resetBtn.disabled = true;
-            resetBtn.textContent = "Sending...";
-
-            const response = await fetch("/forgot-password", {
+        const response = await fetch(
+            "https://gdeh-student-portal-1.onrender.com/forgot-password",
+            {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -26,50 +27,41 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify({
                     identifier
                 })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-
-                alert(
-                    "Password reset link has been sent to your registered email."
-                );
-
-                inputField.value = "";
-
-            } else {
-
-                alert(
-                    data.message ||
-                    "Failed to send password reset link."
-                );
-
             }
+        );
 
-        } catch (error) {
+        const data = await response.json();
 
-            console.error("Forgot Password Error:", error);
+        if (data.success) {
 
             alert(
-                "Unable to connect to the server. Please try again later."
+                "Password reset link has been sent to your email."
             );
 
-        } finally {
+            document.getElementById(
+                "email_username"
+            ).value = "";
 
-            resetBtn.disabled = false;
-            resetBtn.textContent = "Reset Password";
+        } else {
+
+            alert(
+                data.message ||
+                "Failed to send reset link."
+            );
 
         }
 
-    });
+    } catch (error) {
 
-    inputField.addEventListener("keypress", (event) => {
+        console.log(error);
 
-        if (event.key === "Enter") {
-            resetBtn.click();
-        }
+        alert(
+            "Network error. Please try again."
+        );
 
-    });
+    }
+
+    resetBtn.disabled = false;
+    resetBtn.innerText = "Reset Password";
 
 });
